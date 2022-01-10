@@ -19,7 +19,7 @@ def getBothLists():
                 giros_list.append(row[0])
             cursor.execute('SELECT * from OCUPACION')
             for row in cursor:
-                giros_list.append([row[1], row[0]])
+                giros_ocupacion_list.append([row[1], row[0]])
             return giros_list, giros_ocupacion_list
         finally:
             cursor.close()
