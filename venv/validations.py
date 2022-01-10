@@ -48,7 +48,7 @@ def valid_meses_sueldo(value) -> bool:
 
 
 def doCellValidations(plan, index, value):
-    res = False
+    res = True
     message = ""
     if index == 1:
         res = valid_tipo_de_plan(value)
