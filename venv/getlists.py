@@ -1,4 +1,6 @@
 import cx_Oracle
+import sys
+
 
 def getBothLists():
     giros_list = []
@@ -20,10 +22,17 @@ def getBothLists():
             cursor.execute('SELECT * from OCUPACION')
             for row in cursor:
                 giros_ocupacion_list.append([row[1], row[0]])
+
+        except:
+            raise RuntimeError('Fallo en conexión con la base de datos.') from exc
+        else:
             return giros_list, giros_ocupacion_list
         finally:
             cursor.close()
-    finally:
+    except:
+        raise RuntimeError('Fallo en conexión con la base de datos.') from exc
+    else:
         if connection is not None:
             connection.close()
-    return [],[]
+    finally:
+        return [],[]
