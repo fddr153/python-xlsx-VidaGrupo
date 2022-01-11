@@ -86,9 +86,7 @@ def plantillaVacia():
         return Response(virtual_wb.getvalue(), mimetype=wb.mime_type,
                         headers={"Content-Disposition": "attachment;filename=plantilla.xlsx"})
     except Exception as ex:
-        return make_response(
-            jsonify(message="Error en la generacion del archivo xlsx", error="Error en el manejo del archivo template"),
-            400)
+        return make_response(jsonify(message="Error en la generacion del archivo xlsx", error="Error en el manejo del archivo template"),400)
 
 
 @app.route(context_path + '/plantillas', methods=['POST'])
@@ -143,6 +141,7 @@ def plantillaRevisada():
         #And now its finally time to fill it with the users data
         myshape = my_array.shape
         yellowFill = PatternFill(fill_type='solid', start_color='F3FF00', end_color='F3FF00')
+        validation_global = True
         for i in range(0, myshape[0]):
             for j in range(0, myshape[1]):
                 auxvalue = my_array[i][j]
@@ -155,6 +154,7 @@ def plantillaRevisada():
                         errormessage = "El valor debe coincidir con los valores de la lista"
                         ws.cell(row=i + 2, column=j).fill = yellowFill
                 if not validation:
+                    validation_global = False
                     ws.cell(row=i + 2, column=j + 1).fill = yellowFill
                     comment = Comment(errormessage, "Sura")
                     comment.width = units.points_to_pixels(300)
@@ -165,7 +165,13 @@ def plantillaRevisada():
         #SENDING FILE BACK TO USER FOR NOW - TESTING
         virtual_wb = BytesIO()
         wb.save(virtual_wb)
-        return Response(virtual_wb.getvalue(), mimetype=wb.mime_type, headers={"Content-Disposition": "attachment;filename=plantilla_revisada.xlsx"})
+        if not validation_global:
+            return Response(virtual_wb.getvalue(), mimetype=wb.mime_type, headers={"Content-Disposition": "attachment;filename=plantilla_revisada.xlsx"})
+        else:
+            return make_response(
+                jsonify(succes=True,
+                        message="El archivo xlsx no contiene errores"),
+                200)
         #return jsonify({"message": "succes"})
     except Exception as ex:
         return make_response(
