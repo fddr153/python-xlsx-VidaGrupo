@@ -56,13 +56,16 @@ def plantillaVacia():
             return make_response(jsonify(message="Error de conexion con la base de datos",error="Listas de parametros de control vacias"), 400)
         i = 0
         for giro in giros_list:
-            ws.cell(row=i + 2, column=1).value = giros_list[i]
+            ws.cell(row=i + 2, column=1).value = giro[0]
+            ws.cell(row=i + 2, column=2).value = giro[1]
             i += 1
         # Update the Template with the Ocupacion fields
         i = 0
         for row in ocupacion_list:
-            ws2.cell(row=i + 1, column=1).value = ocupacion_list[i][0]
-            ws2.cell(row=i + 1, column=2).value = ocupacion_list[i][1]
+            ws2.cell(row=i + 1, column=1).value = row[0]
+            ws2.cell(row=i + 1, column=2).value = row[1]
+            ws2.cell(row=i + 1, column=3).value = row[2]
+            ws2.cell(row=i + 1, column=4).value = row[3]
             i += 1
         # NOW I UPDATE MY MAIN WORKSHEET
         ws = wb.worksheets[sheet_number]
@@ -113,13 +116,16 @@ def plantillaRevisada():
         # Update the Template with the Giros fields
         i = 0
         for giro in giros_list:
-            ws.cell(row=i + 2, column=1).value = giros_list[i]
+            ws.cell(row=i + 2, column=1).value = giro[0]
+            ws.cell(row=i + 2, column=2).value = giro[1]
             i += 1
         # Update the Template with the Ocupacion fields
         i = 0
         for row in ocupacion_list:
-            ws2.cell(row=i + 1, column=1).value = ocupacion_list[i][0]
-            ws2.cell(row=i + 1, column=2).value = ocupacion_list[i][1]
+            ws2.cell(row=i + 1, column=1).value = row[0]
+            ws2.cell(row=i + 1, column=2).value = row[1]
+            ws2.cell(row=i + 1, column=3).value = row[2]
+            ws2.cell(row=i + 1, column=4).value = row[3]
             i += 1
         #Hidding my Configuration Sheets
         wb.worksheets[2].sheet_state = wb.worksheets[2].SHEETSTATE_VERYHIDDEN
